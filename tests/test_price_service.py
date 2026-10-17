@@ -1,12 +1,12 @@
-import pytest
 from decimal import Decimal
+from unittest.mock import AsyncMock, MagicMock
 
-from unittest.mock import MagicMock, AsyncMock
+import pytest
 
-from app.services.price import PriceService
-from app.schemas.prices import PriceSchema
 from app.database.models import Price
 from app.schemas.common import CollectionEnvelope, DateRange, PaginationParams
+from app.schemas.prices import PriceSchema
+from app.services.price import PriceService
 
 
 async def test_get_last_price(mock_uow: MagicMock):
@@ -99,9 +99,7 @@ async def test_load_price_client_fails(mock_uow: MagicMock):
     mock_uow.prices.save = AsyncMock()
 
     deribit_client = AsyncMock()
-    deribit_client.get_index_price = AsyncMock(
-        side_effect=RuntimeError("Deribit fail.")
-    )
+    deribit_client.get_index_price = AsyncMock(side_effect=RuntimeError("Deribit fail."))
 
     service = PriceService(uow=mock_uow)
 

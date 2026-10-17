@@ -1,7 +1,8 @@
-from sqlalchemy import func, Index
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy.types import String, BigInteger, Numeric
 from decimal import Decimal
+
+from sqlalchemy import Index
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.types import BigInteger, Numeric, String
 
 
 class Base(DeclarativeBase):

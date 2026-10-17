@@ -1,7 +1,7 @@
-import pytest
-
 from decimal import Decimal
-from unittest.mock import AsyncMock, Mock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, Mock
+
+import pytest
 
 from app.clients.deribit import DeribitClient
 from app.core.exceptions.client import ClientError
@@ -10,9 +10,7 @@ from app.core.settings import settings
 
 async def test_get_index_price(mock_session: MagicMock, mock_response: Mock):
     mock_response.status = 200
-    mock_response.json = AsyncMock(
-        return_value={"result": {"index_price": Decimal("67450.25")}}
-    )
+    mock_response.json = AsyncMock(return_value={"result": {"index_price": Decimal("67450.25")}})
 
     client = DeribitClient(session=mock_session)
 

@@ -1,9 +1,9 @@
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
 
 from app.database.models import Price
-from app.schemas.prices import PriceSchema
 from app.schemas.common import CollectionEnvelope
+from app.schemas.prices import PriceSchema
 
 
 class PriceRepository:
@@ -58,12 +58,7 @@ class PriceRepository:
         return collection
 
     async def get_last_price(self, ticker: str) -> Price:
-        query = (
-            select(Price)
-            .where(Price.ticker == ticker)
-            .order_by(Price.timestamp.desc())
-            .limit(1)
-        )
+        query = select(Price).where(Price.ticker == ticker).order_by(Price.timestamp.desc()).limit(1)
 
         db_price = await self.session.scalar(query)
 

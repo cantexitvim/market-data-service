@@ -1,14 +1,15 @@
+from typing import Literal
+
 from fastapi import APIRouter, Depends
 
-from app.services.price import PriceService
 from app.schemas.common import (
-    ResponseEnvelope,
-    PaginationParams,
-    DateRange,
     CollectionEnvelope,
+    DateRange,
+    PaginationParams,
+    ResponseEnvelope,
 )
 from app.schemas.prices import PriceSchema
-from typing import Literal
+from app.services.price import PriceService
 
 router = APIRouter(prefix="/prices", tags=["Prices"])
 
@@ -32,9 +33,7 @@ async def get_prices(
     return ResponseEnvelope(data=price_collection)
 
 
-@router.get(
-    "/last", name="get_last_price", response_model=ResponseEnvelope[PriceSchema]
-)
+@router.get("/last", name="get_last_price", response_model=ResponseEnvelope[PriceSchema])
 async def get_last_price(
     ticker: Literal["btc_usd", "eth_usd"], service: PriceService = Depends()
 ) -> ResponseEnvelope[PriceSchema]:

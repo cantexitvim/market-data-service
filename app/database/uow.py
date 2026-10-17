@@ -1,10 +1,12 @@
-from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 from fastapi import Depends
-from app.database.session import get_session_maker
-from app.database.repositories.price import PriceRepository
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
-class UnitOfWork():
-    def __init__(self, session_factory: async_sessionmaker[AsyncSession] = Depends(get_session_maker) ):
+from app.database.repositories.price import PriceRepository
+from app.database.session import get_session_maker
+
+
+class UnitOfWork:
+    def __init__(self, session_factory: async_sessionmaker[AsyncSession] = Depends(get_session_maker)):
         self.session_factory = session_factory
 
     async def __aenter__(self):

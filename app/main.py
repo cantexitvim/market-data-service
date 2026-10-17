@@ -1,13 +1,14 @@
-from fastapi import FastAPI
 from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
 from fastapi.responses import FileResponse
 
-from app.core.settings import settings
 from app.api.v1 import v1_router
 from app.core.logger import setup_logger
+from app.core.settings import settings
 from app.database.session import close_db
-from app.redis import redis_helper
 from app.middleware import register_middlewares
+from app.redis import redis_helper
 
 
 @asynccontextmanager

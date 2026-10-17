@@ -1,12 +1,14 @@
 import time
-from fastapi import Depends
-from datetime import datetime, timezone, date, time as dt_time
+from datetime import UTC, date, datetime
+from datetime import time as dt_time
 
-from app.database.uow import UnitOfWork
-from app.database.models import Price
-from app.schemas.common import PaginationParams, CollectionEnvelope, DateRange
-from app.schemas.prices import PriceSchema
+from fastapi import Depends
+
 from app.clients.base import BaseClient
+from app.database.models import Price
+from app.database.uow import UnitOfWork
+from app.schemas.common import CollectionEnvelope, DateRange, PaginationParams
+from app.schemas.prices import PriceSchema
 
 
 class PriceService:
@@ -56,8 +58,6 @@ class PriceService:
 
     def _date_to_timestamp(self, dt: date | None) -> int | None:
         if dt is not None:
-            timestamp = int(
-                datetime.combine(dt, dt_time.min, tzinfo=timezone.utc).timestamp()
-            )
+            timestamp = int(datetime.combine(dt, dt_time.min, tzinfo=UTC).timestamp())
 
             return timestamp

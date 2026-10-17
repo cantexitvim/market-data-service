@@ -1,8 +1,8 @@
 from celery import Celery
 from celery.schedules import crontab
 
-from app.core.settings import settings
 from app.core.logger import setup_logger
+from app.core.settings import settings
 
 setup_logger()
 
