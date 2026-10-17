@@ -17,6 +17,13 @@ router = APIRouter(prefix="/prices", tags=["Prices"])
 @router.get(
     "",
     name="get_prices",
+    summary="Получить историю цен",
+    description=(
+        "Возвращает историю ценового индекса для указанного тикера. "
+        "Поддерживает фильтрацию по диапазону дат, сортировку по времени "
+        "и пагинацию результатов. "
+        "Временной диапазон необходимо указывать в формате ISO. Например: 2026-10-17"
+    ),
     response_model=ResponseEnvelope[CollectionEnvelope[PriceSchema]],
 )
 async def get_prices(
@@ -33,7 +40,17 @@ async def get_prices(
     return ResponseEnvelope(data=price_collection)
 
 
-@router.get("/last", name="get_last_price", response_model=ResponseEnvelope[PriceSchema])
+@router.get(
+    "/last",
+    name="get_last_price",
+    summary="Получить последнюю цену",
+    description=(
+        "Возвращает последнюю сохранённую цену для указанного тикера. "
+        "Если для тикера нет сохранённых данных, результат зависит "
+        "от обработки этого случая в сервисном слое."
+    ),
+    response_model=ResponseEnvelope[PriceSchema],
+)
 async def get_last_price(
     ticker: Literal["btc_usd", "eth_usd"], service: PriceService = Depends()
 ) -> ResponseEnvelope[PriceSchema]:
