@@ -1,0 +1,22 @@
+from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
+from fastapi import Depends
+from app.database.session import get_session_maker
+from app.database.repositories.price import PriceRepository
+
+class UnitOfWork():
+    def __init__(self, session_factory: async_sessionmaker[AsyncSession] = Depends(get_session_maker) ):
+        self.session_factory = session_factory
+
+    async def __aenter__(self):
+        self.session: AsyncSession = self.session_factory()
+
+        self.prices = PriceRepository(self.session)
+
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is not None:
+            await self.session.rollback()
+        else:
+            await self.session.commit()
+        await self.session.close()
